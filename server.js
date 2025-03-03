@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
+const adminAuthRoutes = require('./routes/adminAuth');
 const productRoutes = require('./routes/products');
 const categoryRoutes = require('./routes/categories');
 const cartRoutes = require('./routes/cart');
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 app.use('/auth', authRoutes);
+app.use('/auth/admin', adminAuthRoutes);
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/cart', cartRoutes);
