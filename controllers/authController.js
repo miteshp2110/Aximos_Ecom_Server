@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const CLIENT_URL = process.env.CLIENT_URL;
 
 exports.googleAuthCallback = (req, res) => {
   
@@ -12,7 +13,9 @@ exports.googleAuthCallback = (req, res) => {
   };
   
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
-  res.json({ token });
+
+  const jwtString = encodeURIComponent(token);
+  res.redirect(`${CLIENT_URL}/?jwt=${jwtString}`)
 };
 
 exports.loginFailure = (req, res) => {
