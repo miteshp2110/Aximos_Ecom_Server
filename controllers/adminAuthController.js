@@ -60,7 +60,7 @@ exports.registerAdmin = (req, res) => {
           
           
           const payload = { id: user.id, role: user.role };
-          const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+          const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
           res.json({ token });
         });
       }

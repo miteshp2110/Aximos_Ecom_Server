@@ -27,7 +27,8 @@ exports.getAllProducts = (req, res) => {
 };
 
 exports.searchProducts = (req, res) => {
-  const { name, category } = req.query;
+  const { name, category,page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
   let query = "SELECT * FROM products WHERE status = 'active'";
   let params = [];
   if (name) {
@@ -38,6 +39,8 @@ exports.searchProducts = (req, res) => {
     query += " AND category_id = ?";
     params.push(category);
   }
+  query += " LIMIT ? OFFSET ?";
+  params.push(parseInt(limit), parseInt(offset));
   db.query(query, params, (err, results) => {
     if (err) return res.status(500).json(err);
     res.json(results);
