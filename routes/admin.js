@@ -3,6 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const adminAuthController = require('../controllers/adminAuthController')
 const adminCategoryController = require('../controllers/adminCategoryController');
+const productController = require('../controllers/productController');
 const { verifyToken, requireAdmin } = require('../middlewares/authMiddleware');
 
 
@@ -16,5 +17,7 @@ router.post('/register', verifyToken, requireAdmin, adminAuthController.register
 router.post('/category', verifyToken, requireAdmin, adminCategoryController.addCategory);
 
 router.get('/stats', verifyToken, requireAdmin, adminController.getStats);
+
+router.get('/products', verifyToken, requireAdmin, productController.getAllProducts);
 
 module.exports = router;

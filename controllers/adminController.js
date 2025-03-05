@@ -1,6 +1,7 @@
 const db = require('../config/db');
 
 exports.updateProduct = (req, res) => {
+  console.log(req.body)
   const { id } = req.params;
   const { name, description, price, status, category_id, image_urls } = req.body;
   const query = `
@@ -19,6 +20,7 @@ exports.updateProduct = (req, res) => {
 };
 
 exports.addProduct = (req, res) => {
+  console.log(req.body);
   const { name, description, price, status, category_id, image_urls } = req.body;
   const query = `
     INSERT INTO products (name, description, price, status, category_id, image_urls)

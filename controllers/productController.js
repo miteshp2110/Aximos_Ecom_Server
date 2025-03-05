@@ -13,6 +13,19 @@ exports.getProducts = (req, res) => {
   );
 };
 
+exports.getAllProducts = (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+  db.query(
+    "SELECT * FROM products LIMIT ? OFFSET ?",
+    [parseInt(limit), parseInt(offset)],
+    (err, results) => {
+      if (err) return res.status(500).json(err);
+      res.json(results);
+    }
+  );
+};
+
 exports.searchProducts = (req, res) => {
   const { name, category } = req.query;
   let query = "SELECT * FROM products WHERE status = 'active'";
@@ -30,3 +43,4 @@ exports.searchProducts = (req, res) => {
     res.json(results);
   });
 };
+

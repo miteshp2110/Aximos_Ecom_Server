@@ -15,6 +15,7 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
