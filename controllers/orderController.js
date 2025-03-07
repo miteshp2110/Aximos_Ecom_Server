@@ -30,10 +30,46 @@ exports.checkout = (req, res) => {
   });
 };
 
+
 exports.orderHistory = (req, res) => {
   const user_id = req.user.id;
-  db.query("SELECT * FROM orders WHERE user_id = ?", [user_id], (err, results) => {
+  db.query(" select orders.id,products.id as p_id ,products.name,products.image_urls,products.price, order_items.quantity, (products.price*order_items.quantity) as product_total,orders.created_at as date, orders.total_price,orders.status from orders join order_items join products  where orders.id = order_items.order_id and order_items.product_id = products.id and orders.user_id = ?;", [user_id], (err, results) => {
     if (err) return res.status(500).json(err);
-    res.json(results);
+
+    var orderMap = new Map();
+    results.map((result) => {
+      if(orderMap.has(result.id)){
+        var currentOrder = orderMap.get(result.id);
+        currentOrder.items.push({
+          id: result.p_id,
+          name: result.name,
+          price: result.price,
+          quantity: result.quantity,
+          image: result.image_urls[0]
+        });
+        orderMap.set(result.id,currentOrder);
+      }
+      else{
+        orderMap.set(result.id,{
+          id:result.id,
+          date:result.date,
+          items:[
+            {
+              id: result.p_id,
+              name: result.name,
+              price: result.price,
+              quantity: result.quantity,
+              image: result.image_urls[0]
+            }
+          ],
+          total:result.total_price,
+          status:result.status==='completed'?'Delivered':'Pending'
+        })
+      }
+    });
+    const resultArray = Array.from(orderMap.values());
+    // console.log(resultArray)
+    // console.log(orderMap)
+    res.json(resultArray);
   });
 };

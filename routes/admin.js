@@ -38,4 +38,6 @@ router.get('/stats', verifyToken, requireAdmin, adminController.getStats);
 
 router.get('/products', verifyToken, requireAdmin, productController.getAllProducts);
 
+router.post('/reset', verifyToken, requireAdmin, adminController.resetPassword);
+
 module.exports = router;

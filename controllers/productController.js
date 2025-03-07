@@ -14,7 +14,19 @@ exports.getProducts = (req, res) => {
 };
 
 exports.getAllProducts = (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 10 ,id} = req.query;
+
+  if(id){
+    db.query(
+      "SELECT * FROM products where id = ?",
+      [parseInt(id)],
+      (err, results) => {
+        if (err) return res.status(500).json(err);
+        return res.json(results);
+      }
+    );
+  }
+  else{
   const offset = (page - 1) * limit;
   db.query(
     "SELECT * FROM products LIMIT ? OFFSET ?",
@@ -24,10 +36,23 @@ exports.getAllProducts = (req, res) => {
       res.json(results);
     }
   );
+}
 };
 
 exports.searchProducts = (req, res) => {
-  const { name, category,page = 1, limit = 10 } = req.query;
+  const { name, category,page = 1, limit = 10,id } = req.query;
+
+  if(id){
+    db.query(
+      "SELECT * FROM products where id = ?",
+      [parseInt(id)],
+      (err, results) => {
+        if (err) return res.status(500).json(err);
+        return res.json(results);
+      }
+    );
+  }
+  else{
   const offset = (page - 1) * limit;
   let query = "SELECT * FROM products WHERE status = 'active'";
   let params = [];
@@ -46,4 +71,4 @@ exports.searchProducts = (req, res) => {
     res.json(results);
   });
 };
-
+}
