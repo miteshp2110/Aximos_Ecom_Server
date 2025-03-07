@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/aximos/auth/google/callback',
+      callbackURL: 'https://xceptions.tech/aximos/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       
